@@ -3,27 +3,32 @@ package sparta.challenge;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.stream.Stream;
 
 public class ArithmeticCalculator<T extends Number> {
-    private Queue<T> list;
+    private Queue<Double> list;
+    private T type;
 
-    public ArithmeticCalculator() {
+    public ArithmeticCalculator(T type) {
         list = new LinkedList<>();
+        this.type = type;
     }
 
-    public Queue<T> getList() {
+    public T getType() {
+        return type;
+    }
+
+    public Queue<Double> getList() {
         return list;
     }
 
-    public void setList(Queue<T> list) {
+    public void setList(Queue<Double> list) {
         this.list = list;
     }
 
     //사칙연산 함수
-    public void calculate(OperatorType op, T num1, T num2) {
+    public void calculate(OperatorType op, double num1, double num2) {
         //연산
-        T result = null;
+        double result = 0.0;
         if (op == null) {
             System.out.println("제대로 된 연산자를 입력하세요");
             return;
@@ -39,7 +44,7 @@ public class ArithmeticCalculator<T extends Number> {
                 result = multiply(num1, num2);
                 break;
             case DIVIDE:
-                result = (T) (Double.valueOf(divide(num1, num2)));
+                result = divide(num1, num2);
                 break;
         }
         showResult(result);
@@ -48,15 +53,11 @@ public class ArithmeticCalculator<T extends Number> {
 
     //입력 값보다 더 큰 값을 보여주는 함수
     public void showGreaterThanScanner(double num1) {
-        List<Double> doubleList = list.stream().map(
-                element -> element.doubleValue()).toList();
-
-        List<Double> bigList = doubleList.stream().filter(
-                element -> element > num1).toList();
+        List<Double> bigList = list.stream().filter(num -> num > num1).toList();
 
         System.out.println("입력보다 큰 값을 출력합니다.");
 
-        if (bigList.size() == 0) {
+        if (bigList.isEmpty()) {
             System.out.println("큰 결과가 없습니다!");
         } else {
             for (Double v : bigList) {
@@ -67,46 +68,31 @@ public class ArithmeticCalculator<T extends Number> {
     }
 
     //더하기
-    private T add(T num1, T num2) {
-        if (num1 instanceof Double && num2 instanceof Double) {
-            return (T) (Double.valueOf(num1.doubleValue() + num2.doubleValue()));
-        } else if (num1 instanceof Integer && num2 instanceof Integer) {
-            return (T) (Integer.valueOf(num1.intValue() + num2.intValue()));
-        }
-        return null;
+    private double add(double num1, double num2) {
+        return num1 + num2;
     }
 
     //빼기
-    private T subtract(T num1, T num2) {
-        if (num1 instanceof Double && num2 instanceof Double) {
-            return (T) (Double.valueOf(num1.doubleValue() - num2.doubleValue()));
-        } else if (num1 instanceof Integer && num2 instanceof Integer) {
-            return (T) (Integer.valueOf(num1.intValue() - num2.intValue()));
-        }
-        return null;
+    private double subtract(double num1, double num2) {
+        return num1 - num2;
     }
 
     //곱하기
-    private T multiply(T num1, T num2) {
-        if (num1 instanceof Double && num2 instanceof Double) {
-            return (T) (Double.valueOf(num1.doubleValue() * num2.doubleValue()));
-        } else if (num1 instanceof Integer && num2 instanceof Integer) {
-            return (T) (Integer.valueOf(num1.intValue() * num2.intValue()));
-        }
-        return null;
+    private double multiply(double num1, double num2) {
+        return num1 * num2;
     }
 
     //나누기
-    private double divide(T num1, T num2) {
-        return num1.doubleValue() / num2.doubleValue();
+    private double divide(double num1, double num2) {
+        return num1 / num2;
     }
 
     //연산 결과를 보여주는 함수
-    private void showResult(T result) {
-        if (result instanceof Double) {
-            System.out.println("연산 결과는 " + result.doubleValue());
-        } else if (result instanceof Integer) {
-            System.out.println("연산 결과는 " + result.intValue());
+    private void showResult(double result) {
+        if (getType() instanceof Double) {
+            System.out.println("연산 결과는 " + result);
+        } else if (getType() instanceof Integer) {
+            System.out.println("연산 결과는 " + (int)result);
         }
     }
 }
