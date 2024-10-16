@@ -44,7 +44,12 @@ public class ArithmeticCalculator<T extends Number> {
                 result = multiply(num1, num2);
                 break;
             case DIVIDE:
-                result = divide(num1, num2);
+                try{
+                    result = divide(num1, num2);
+                }catch(ArithmeticException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
                 break;
         }
         showResult(result);
@@ -84,6 +89,7 @@ public class ArithmeticCalculator<T extends Number> {
 
     //나누기
     private double divide(double num1, double num2) {
+        if(num2 == 0) throw new ArithmeticException("왜 0으로 나눠!");
         return num1 / num2;
     }
 
