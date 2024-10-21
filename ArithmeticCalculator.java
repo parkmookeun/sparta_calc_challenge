@@ -26,14 +26,10 @@ public class ArithmeticCalculator<T extends Number> {
     }
 
     //사칙연산 함수
-    public void calculate(OperatorType op, double num1, double num2) {
+    public void calculate(String operator, double num1, double num2) {
         //연산
         double result = 0.0;
-        if (op == null) {
-            System.out.println("제대로 된 연산자를 입력하세요");
-            return;
-        }
-        switch (op) {
+        switch (OperatorType.fromValue(operator)) {
             case ADD:
                 result = add(num1, num2);
                 break;
